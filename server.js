@@ -53,6 +53,98 @@ app.post('/', function (req, res) {
 });
 
 
+// 사용자 재료 스스로 추가
+// POST : 52.79.234.234/user/ingredients/put
+// parameter : UID, ing_Name
+// return => ing_Name, ing_imageURL, ing_Location
+app.post('/user/ingredients/put', function(req, res) {
+    var UID = req.body.UID;
+    var ing_Name = req.body.ing_Name;
+
+    async.waterfall([
+        checkIngredient,
+        checkRefrigerator,
+        insertIngredient
+    ],
+        function  (err, result) {
+            console.log(result);
+            res.send(result);
+        });
+
+        function checkIngredient(callback) {
+            var rows = connection.query('select * from ingredient where ing_Name ="'+ing_Name+'"');
+            callback(null, rows[0])
+        }
+        function checkRefrigerator(ing, callback) {
+            var result;
+            var notResult = true;
+            if(ing.length == 0 ) {
+                result = "DB에 없는 재료입니다.";
+            }
+            else {
+                var rows = connection.query('select * from refrigerator where u_Id ="'+UID+'" and ing_Id='+ing.ing_Id);
+                if(rows.length != 0  ) {
+                    result = "이미 냉장고에 존재하는 재료입니다.";
+                }
+                else {
+                    result = {
+                        "ing_Name" : ing.ing_Name,
+                        "ing_imageURL" : ing.ing_ImageURL,
+                        "ing_Location" : ing.ing_Location
+                    };
+                    notResult = false;
+                }
+            }
+            callback(null, result, notResult, ing.ing_Id);
+        }
+        function insertIngredient(result, notResult, ing_Id, callback) {
+
+            if(!notResult) {
+               connection.query(' insert into refrigerator values("'+UID+'", '+ing_Id+');' ); 
+            }
+            callback(null, result);
+        }
+});
+
+
+// 사용자 재료 스스로 삭제
+// POST : 52.79.234.234/user/ingredients/delete
+// parameter : UID, ing_Name
+// return => String( " Succeed "  or " Fail ")
+app.post('/user/ingredients/delete', function(req, res) {
+    var UID = req.body.UID;
+    var ing_Name = req.body.ing_Name;
+
+    async.waterfall([
+        function (callback) {
+            let rows = connection.query('select * from ingredient where ing_Name ="'+ing_Name+'"');
+            callback(null, rows);
+        },
+        function (ing, callback) {
+            var Iid;
+            var NotExisted = true;
+            if ( ing.length != 0) {
+                Iid = ing[0].ing_Id;
+                connection.query('delete from refrigerator where u_Id="'+UID+'" and ing_Id='+Iid);
+                NotExisted = false;
+            }
+            callback(null, Iid, NotExisted);
+        }
+    ],
+        function (err, result, NotExisted) {
+            
+            if(NotExisted) {
+                res.send("이미 없는 재료입니다.");
+            }
+            else {
+                res.send(result + "번 재료 삭제 ");
+            }
+		
+        }
+    )
+});
+
+
 
 
 

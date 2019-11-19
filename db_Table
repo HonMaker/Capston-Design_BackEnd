@@ -1,0 +1,50 @@
+CREATE TABLE `user` (
+  `u_Id` varchar(100) NOT NULL,
+  PRIMARY KEY (`u_Id`)
+);
+
+CREATE TABLE `ingredient` (
+  `ing_Id` inT(11)  NOT NULL AUTO_INCREMENT,
+  `ing_Name` VARCHAR(32) NOT NULL,
+  `ing_Location` varchar(32) NOT NULL,
+  `ing_ImageURL` varchar(200),
+  PRIMARY KEY (`ing_Id`)
+);
+
+CREATE TABLE `recipelist` (
+  `rec_Id` int(11) NOT NULL AUTO_INCREMENT,
+  `rec_Name` VARCHAR(32) NOT NULL,
+  `rec_imageURL` varchar(200) NOT NULL,
+  `rec_recipeURL` varchar(200) NOT NULL,
+   PRIMARY KEY (`rec_Id`)
+);
+alter table recipelist add avgRatio double not null default 0;
+
+
+CREATE TABLE `recipe` (
+  `rec_Id` int(11) NOT NULL,
+  `rec_Name` VARCHAR(32) NOT NULL, 
+  `ing_Id` INT(11)  NOT NULL, 
+  `ing_Imp` bool NOT NULL, 
+  FOREIGN KEY (`ing_Id`) REFERENCES `ingredient` (`ing_Id`),
+  FOREIGN KEY (`rec_Id`) REFERENCES `recipelist` (`rec_Id`)
+);
+
+
+
+CREATE TABLE `refrigerator` (
+  `u_Id` VARCHAR(100) NOT NULL,
+  `ing_Id` INT(11)  NOT NULL,
+  FOREIGN KEY (`u_Id`) REFERENCES `user`(`u_Id`),
+  FOREIGN KEY (`ing_Id`) REFERENCES `ingredient` (`ing_Id`)
+);
+
+
+
+CREATE TABLE `eachRating` (
+  `u_Id` VARCHAR(100) NOT NULL,
+  `rec_Id` INT(11)  NOT NULL,
+  `ratio` double,
+  FOREIGN KEY (`u_Id`) REFERENCES `user`(`u_Id`),
+  FOREIGN KEY (`rec_Id`) REFERENCES `recipelist` (`rec_Id`)
+);
