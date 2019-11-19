@@ -4,7 +4,7 @@
 
 ## Running the tests
 
-If you want to test this code you have to change
+If you want to test, you have to change this code
 
 ```js
 var connection = new mysql({
