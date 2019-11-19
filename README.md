@@ -4,7 +4,12 @@
 
 ## Running the tests
 
-If you want to test, you have to change this code
+
+1. built Mysql database with this url
+
+    https://github.com/HonMaker/Capston-Design_DB
+
+2. change this code
 
 ```js
 var connection = new mysql({
@@ -15,7 +20,7 @@ var connection = new mysql({
 });
 ```
 
-to test server
+3. test server
 
 ```
 node server.js
