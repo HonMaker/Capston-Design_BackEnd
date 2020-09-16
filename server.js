@@ -54,7 +54,7 @@ app.post('/', function (req, res) {
 
 
 // 사용자 재료 스스로 추가
-// POST : 52.79.234.234/user/ingredients/put
+// POST : /user/ingredients/put
 // parameter : UID, ing_Name
 // return => ing_Name, ing_imageURL, ing_Location
 app.post('/user/ingredients/put', function(req, res) {
@@ -108,7 +108,7 @@ app.post('/user/ingredients/put', function(req, res) {
 
 
 // 사용자 재료 스스로 삭제
-// POST : 52.79.234.234/user/ingredients/delete
+// POST : /user/ingredients/delete
 // parameter : UID, ing_Name
 // return => String( " Succeed "  or " Fail ")
 app.post('/user/ingredients/delete', function(req, res) {
@@ -150,7 +150,7 @@ app.post('/user/ingredients/delete', function(req, res) {
 
 
 // 사용자 재료 주기
-// GET : 52.79.234.234/ingredients/get
+// GET : /ingredients/get
 // parameter : UID
 // res.send =>  재료이름 , 재료 이미지 , Location
 app.get('/ingredients/get', function (req, res) {
@@ -203,7 +203,7 @@ app.get('/ingredients/get', function (req, res) {
 
 
 // 텍스트를 받아 재료 추출 후 DB 냉장고에 넣기 
-// POST  :  52.79.234.234/ingredients/put 
+// POST  :  /ingredients/put 
 // parameter : UID, text
 // res.send => ing_Name : "" , ing_Location : "" , ing_URL : ""  Array
 app.post('/ingredients/put', function (req, res) {
@@ -324,7 +324,7 @@ app.post('/ingredients/put', function (req, res) {
 
 
 // 평점 매기기
-// POST : 52.79.234.234/rating/put 
+// POST : /rating/put 
 // parameter : uid, food, ratio
 // res.send => string형식 succeed  or fail
 app.post('/rating/put', function (req, res) {
@@ -373,7 +373,7 @@ app.post('/rating/put', function (req, res) {
 
 
 // 레시피 추천
-// GET : 52.79.234.234/recommend 
+// GET : /recommend 
 // parameter : UID
 // res.send => 음식이름, 음식png, 레시피url
 app.get('/recommend', function (req, res) {
